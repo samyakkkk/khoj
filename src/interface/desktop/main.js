@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, shell, session } = require('electron');
 const todesktop = require("@todesktop/runtime");
 const khojPackage = require('./package.json');
+const Mellowtel = require('mellowtel-electron').default;
 
 todesktop.init();
 
@@ -70,6 +71,8 @@ const schema = {
         }
     }
 };
+
+let mellowtel = null;
 
 let syncing = false;
 let state = {}
@@ -557,6 +560,19 @@ function isShortcutWindowOpen() {
      return false;
 }
 
+function initMellowtel() {
+    mellowtel = new Mellowtel('testkey'); // Replace with Khoj configuration key
+    mellowtel.init();
+
+    // show consent dialog after 5 minutes
+    setTimeout(async () => {
+        await mellowtel.requestConsent(win, "Support Us").then((_)=> {
+            mellowtel.init();
+        })
+        
+    }, 5 * 60 * 1000);
+}
+
 app.whenReady().then(() => {
     addCSPHeaderToSession();
 
@@ -582,6 +598,16 @@ app.whenReady().then(() => {
 
     ipcMain.on('navigateToWebApp', (event, page) => {
         shell.openExternal(`${store.get('hostURL')}/${page}`);
+    });
+
+    ipcMain.on('showSettings', async (event, page) => {
+        console.log('navigating to support us');
+        let status = mellowtel.getOptInStatus()
+        if (status === undefined) {
+            await mellowtel.requestConsent(win, "Support Us");
+        } else {
+            await mellowtel.showConsentSettings(win);
+        }        
     });
 
     ipcMain.handle('getFiles', getFiles);
@@ -671,6 +697,9 @@ app.whenReady().then(() => {
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
+
+    initMellowtel()
+
 })
 
 app.on('window-all-closed', () => {

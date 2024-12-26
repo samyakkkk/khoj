@@ -19,6 +19,7 @@
     "@todesktop/runtime": "^2.0.0",
     "axios": "^1.7.4",
     "cron": "^2.4.3",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "mellowtel-electron": "^700.0.8"
   }
 }

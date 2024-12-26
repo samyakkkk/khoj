@@ -78,6 +78,10 @@ async function populateHeaderPane() {
                     `}
                     <div id="khoj-nav-menu" class="khoj-nav-dropdown-content">
                         <div class="khoj-nav-username"> ${username} </div>
+                        <a onclick="window.supportUsAPI.showSettings()" class="khoj-nav-link">
+                        <img class="khoj-nav-icon" src="./assets/icons/support.svg" alt="Support Us"></img>
+                        Support Us
+                        </a>
                         <a onclick="window.navigateAPI.navigateToWebHome()" class="khoj-nav-link">
                         <img class="khoj-nav-icon" src="./assets/icons/open-link.svg" alt="Open Host Url"></img>
                         Open App

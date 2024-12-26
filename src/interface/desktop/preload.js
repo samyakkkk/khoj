@@ -86,6 +86,10 @@ contextBridge.exposeInMainWorld('navigateAPI', {
   navigateToWebHome: () => ipcRenderer.send('navigateToWebApp', ''),
 })
 
+contextBridge.exposeInMainWorld('supportUsAPI', {
+  showSettings: () => ipcRenderer.send('showSettings', ''),
+})
+
 contextBridge.exposeInMainWorld('openFileAPI', {
   openFile: (path) => ipcRenderer.invoke('openFile', path)
 });
