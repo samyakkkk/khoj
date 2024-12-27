@@ -600,8 +600,7 @@ app.whenReady().then(() => {
         shell.openExternal(`${store.get('hostURL')}/${page}`);
     });
 
-    ipcMain.on('showSettings', async (event, page) => {
-        console.log('navigating to support us');
+    ipcMain.on('showSettings', async (event) => {
         let status = mellowtel.getOptInStatus()
         if (status === undefined) {
             await mellowtel.requestConsent(win, "Support Us");
